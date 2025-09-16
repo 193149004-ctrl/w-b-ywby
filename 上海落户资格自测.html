@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>上海落户资格自测</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 600px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #4a6491 100%);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 15px;
+        }
+        
+        .progress-container {
+            background: #e0e0e0;
+            height: 8px;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, #4CAF50, #8BC34A);
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+        
+        .question-container {
+            padding: 30px;
+        }
+        
+        .question {
+            margin-bottom: 25px;
+            font-size: 18px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .option {
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .option:hover {
+            border-color: #4a6491;
+            background: #f8f9fa;
+        }
+        
+        .option.selected {
+            border-color: #4a6491;
+            background: #e8f0fe;
+        }
+        
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        #prev-btn {
+            background: #f5f5f5;
+            color: #333;
+        }
+        
+        #prev-btn:hover:not(:disabled) {
+            background: #e0e0e0;
+        }
+        
+        #next-btn {
+            background: #4a6491;
+            color: white;
+        }
+        
+        #next-btn:hover:not(:disabled) {
+            background: #3a547e;
+        }
+        
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .result-container {
+            padding: 30px;
+            text-align: center;
+            display: none;
+        }
+        
+        .result-title {
+            font-size: 24px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        
+        .result-content {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+        
+        .result-text {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .result-detail {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+        
+        .advisor-section {
+            background: linear-gradient(135deg, #09BB07, #2E7D32);
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            }
+            50% {
+                transform: scale(1.02);
+                box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            }
+        }
+        
+        .advisor-title {
+            font-size: 22px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .advisor-description {
+            font-size: 16px;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+        
+        .wechat-id {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 50px;
+            font-size: 20px;
+            font-weight: bold;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            backdrop-filter: blur(5px);
+            animation: bounce 1.5s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+        
+        .wechat-icon {
+            font-size: 24px;
+        }
+        
+        .copy-btn {
+            background: white;
+            color: #09BB07;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .copy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .thank-you-message {
+            display: none;
+            padding: 30px;
+            background: #e8f5e9;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .thank-you-icon {
+            font-size: 50px;
+            color: #4CAF50;
+            margin-bottom: 15px;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+            color: #666;
+            border-top: 1px solid #eee;
+        }
+        
+        .restart-btn {
+            color: #4a6491;
+            cursor: pointer;
+            text-decoration: underline;
+            margin-top: 15px;
+            display: inline-block;
+        }
+        
+        .copied-message {
+            display: none;
+            background: rgba(255, 255, 255, 0.9);
+            color: #09BB07;
+            padding: 10px 15px;
+            border-radius: 5px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 600px) {
+            .header {
+                padding: 20px;
+            }
+            
+            .question-container, .result-container {
+                padding: 20px;
+            }
+            
+            .question {
+                font-size: 16px;
+            }
+            
+            button {
+                padding: 10px 20px;
+            }
+            
+            .advisor-section {
+                padding: 20px;
+            }
+            
+            .wechat-id {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>上海落户资格自测</h1>
+            <p>回答10个问题，了解您是否符合上海落户条件</p>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        
+        <div class="question-container" id="question-container">
+            <div class="question" id="question"></div>
+            <div class="options" id="options"></div>
+            <div class="buttons">
+                <button id="prev-btn" disabled>上一题</button>
+                <button id="next-btn">下一题</button>
+            </div>
+        </div>
+        
+        <div class="result-container" id="result-container">
+            <h2 class="result-title">测试完成！</h2>
+            <div class="result-content">
+                <p class="result-text" id="result-text"></p>
+                <div class="result-detail" id="result-detail"></div>
+            </div>
+            
+            <div class="advisor-section" id="advisor-section">
+                <h3 class="advisor-title">添加专属落户顾问</h3>
+                <p class="advisor-description">1对1为您提供详细规划</p>
+                
+                <div class="wechat-id">
+                    <i class="fab fa-weixin wechat-icon"></i>
+                    <span id="wechat-id">12312312312</span>
+                </div>
+                
+                <button class="copy-btn" id="copy-btn">
+                    <i class="fas fa-copy"></i> 复制微信号
+                </button>
+                
+                <div class="copied-message" id="copied-message">已复制到剪贴板</div>
+            </div>
+            
+            <div class="thank-you-message" id="thank-you-message">
+                <div class="thank-you-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3>顾问将尽快联系您！</h3>
+                <p>我们的落户顾问将在24小时内添加您的微信，为您提供详细规划。</p>
+                <div class="restart-btn" id="restart-btn">重新测试</div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>注：本测试仅供参考，最终落户资格以上海市人社局审核为准</p>
+        </div>
+    </div>
+
+    <script>
+        // 问题数据
+        const questions = [
+            {
+                question: "您在沪连续缴纳社保的年限是？",
+                options: [
+                    { text: "不满3年", value: 0 },
+                    { text: "3-5年", value: 1 },
+                    { text: "5-7年", value: 2 },
+                    { text: "7年以上", value: 3 }
+                ]
+            },
+            {
+                question: "您的社保缴纳基数是否达到本市上年度平均工资的2倍？",
+                options: [
+                    { text: "未达到", value: 0 },
+                    { text: "达到1-2倍", value: 1 },
+                    { text: "达到2-3倍", value: 2 },
+                    { text: "达到3倍以上", value: 3 }
+                ]
+            },
+            {
+                question: "您是否持有中级或高级职称？",
+                options: [
+                    { text: "没有职称", value: 0 },
+                    { text: "持有初级职称", value: 1 },
+                    { text: "持有中级职称", value: 2 },
+                    { text: "持有高级职称", value: 3 }
+                ]
+            },
+            {
+                question: "您的学历是？",
+                options: [
+                    { text: "大专及以下", value: 0 },
+                    { text: "本科", value: 1 },
+                    { text: "硕士", value: 2 },
+                    { text: "博士", value: 3 }
+                ]
+            },
+            {
+                question: "您是否在上海市重点机构工作？",
+                options: [
+                    { text: "不是", value: 0 },
+                    { text: "是", value: 2 }
+                ]
+            },
+            {
+                question: "您是否属于留学归国人员？",
+                options: [
+                    { text: "不是", value: 0 },
+                    { text: "是（境外学习时间满1年）", value: 2 },
+                    { text: "是（境外学习时间不满1年）", value: 1 }
+                ]
+            },
+            {
+                question: "您是否获得过省级及以上科技进步奖？",
+                options: [
+                    { text: "没有", value: 0 },
+                    { text: "获得过省级奖项", value: 2 },
+                    { text: "获得过国家级奖项", value: 3 }
+                ]
+            },
+            {
+                question: "您在沪是否拥有自有房产？",
+                options: [
+                    { text: "没有", value: 0 },
+                    { text: "有（郊区）", value: 1 },
+                    { text: "有（市区）", value: 2 }
+                ]
+            },
+            {
+                question: "您的婚姻状况是？",
+                options: [
+                    { text: "未婚", value: 0 },
+                    { text: "已婚，配偶非沪籍", value: 1 },
+                    { text: "已婚，配偶为沪籍", value: 2 }
+                ]
+            },
+            {
+                question: "您是否属于高层次人才或特殊技能人才？",
+                options: [
+                    { text: "不是", value: 0 },
+                    { text: "是（区级认定）", value: 2 },
+                    { text: "是（市级认定）", value: 3 }
+                ]
+            }
+        ];
+
+        // 应用状态
+        let currentQuestion = 0;
+        let answers = [];
+        let totalScore = 0;
+
+        // DOM元素
+        const questionElement = document.getElementById('question');
+        const optionsElement = document.getElementById('options');
+        const prevButton = document.getElementById('prev-btn');
+        const nextButton = document.getElementById('next-btn');
+        const progressBar = document.getElementById('progress-bar');
+        const questionContainer = document.getElementById('question-container');
+        const resultContainer = document.getElementById('result-container');
+        const resultText = document.getElementById('result-text');
+        const resultDetail = document.getElementById('result-detail');
+        const advisorSection = document.getElementById('advisor-section');
+        const thankYouMessage = document.getElementById('thank-you-message');
+        const copyBtn = document.getElementById('copy-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        const wechatIdElement = document.getElementById('wechat-id');
+        const copiedMessage = document.getElementById('copied-message');
+
+        // 初始化应用
+        function initApp() {
+            showQuestion();
+            updateProgressBar();
+            
+            // 事件监听
+            prevButton.addEventListener('click', goToPreviousQuestion);
+            nextButton.addEventListener('click', goToNextQuestion);
+            copyBtn.addEventListener('click', copyWechatId);
+            restartBtn.addEventListener('click', restartTest);
+        }
+
+        // 显示当前问题
+        function showQuestion() {
+            const question = questions[currentQuestion];
+            questionElement.textContent = question.question;
+            
+            optionsElement.innerHTML = '';
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.classList.add('option');
+                if (answers[currentQuestion] === index) {
+                    optionElement.classList.add('selected');
+                }
+                optionElement.textContent = option.text;
+                optionElement.dataset.index = index;
+                optionElement.addEventListener('click', selectOption);
+                optionsElement.appendChild(optionElement);
+            });
+            
+            // 更新按钮状态
+            prevButton.disabled = currentQuestion === 0;
+            if (currentQuestion === questions.length - 1) {
+                nextButton.textContent = '查看结果';
+            } else {
+                nextButton.textContent = '下一题';
+            }
+        }
+
+        // 选择选项
+        function selectOption(e) {
+            const selectedOption = e.target;
+            const options = document.querySelectorAll('.option');
+            
+            options.forEach(option => option.classList.remove('selected'));
+            selectedOption.classList.add('selected');
+            
+            answers[currentQuestion] = parseInt(selectedOption.dataset.index);
+        }
+
+        // 更新进度条
+        function updateProgressBar() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+
+        // 下一题
+        function goToNextQuestion() {
+            if (answers[currentQuestion] === undefined) {
+                alert('请选择答案后再继续');
+                return;
+            }
+            
+            // 计算当前问题得分
+            const selectedOptionIndex = answers[currentQuestion];
+            totalScore += questions[currentQuestion].options[selectedOptionIndex].value;
+            
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                showQuestion();
+                updateProgressBar();
+            } else {
+                showResult();
+            }
+        }
+
+        // 上一题
+        function goToPreviousQuestion() {
+            // 减去上一题的得分
+            const selectedOptionIndex = answers[currentQuestion];
+            totalScore -= questions[currentQuestion].options[selectedOptionIndex].value;
+            
+            currentQuestion--;
+            showQuestion();
+            updateProgressBar();
+        }
+
+        // 显示结果
+        function showResult() {
+            questionContainer.style.display = 'none';
+            resultContainer.style.display = 'block';
+            
+            // 根据总分判断结果
+            const maxScore = 28; // 所有问题最高分之和
+            const scorePercentage = (totalScore / maxScore) * 100;
+            
+            let pathCount;
+            if (scorePercentage >= 70) {
+                pathCount = 3;
+            } else if (scorePercentage >= 50) {
+                pathCount = 2;
+            } else if (scorePercentage >= 30) {
+                pathCount = 1;
+            } else {
+                pathCount = 0;
+            }
+            
+            resultText.textContent = `您符合${3}种落户路径中的${pathCount}种`;
+            
+            if (pathCount > 0) {
+                resultDetail.innerHTML = `
+                    <p>根据您的回答，您可能符合以下落户条件：</p>
+                    <ul style="text-align: left; margin-top: 10px;">
+                        <li>居转户落户</li>
+                        <li>人才引进落户</li>
+                        ${scorePercentage > 60 ? '<li>留学生落户</li>' : ''}
+                    </ul>
+                    <p style="margin-top: 15px;">请添加顾问微信获取个性化落户方案</p>
+                `;
+            } else {
+                resultDetail.innerHTML = `
+                    <p>根据您的回答，您目前暂不符合上海落户条件</p>
+                    <p style="margin-top: 15px;">但不要灰心，我们的顾问可以为您提供提升建议，帮助您尽快达到落户标准</p>
+                `;
+            }
+        }
+
+        // 复制微信号
+        function copyWechatId() {
+            const wechatId = wechatIdElement.textContent;
+            
+            // 使用现代剪贴板API
+            navigator.clipboard.writeText(wechatId).then(() => {
+                // 显示复制成功消息
+                copiedMessage.style.display = 'block';
+                
+                // 2秒后隐藏消息
+                setTimeout(() => {
+                    copiedMessage.style.display = 'none';
+                }, 2000);
+                
+                // 显示感谢信息
+                advisorSection.style.display = 'none';
+                thankYouMessage.style.display = 'block';
+            }).catch(err => {
+                // 降级方案：使用旧版剪贴板方法
+                const textArea = document.createElement('textarea');
+                textArea.value = wechatId;
+                document.body.appendChild(textArea);
+                textArea.select();
+                
+                try {
+                    document.execCommand('copy');
+                    // 显示复制成功消息
+                    copiedMessage.style.display = 'block';
+                    
+                    // 2秒后隐藏消息
+                    setTimeout(() => {
+                        copiedMessage.style.display = 'none';
+                    }, 2000);
+                    
+                    // 显示感谢信息
+                    advisorSection.style.display = 'none';
+                    thankYouMessage.style.display = 'block';
+                } catch (err) {
+                    alert('复制失败，请手动复制微信号: ' + wechatId);
+                }
+                
+                document.body.removeChild(textArea);
+            });
+        }
+
+        // 重新开始测试
+        function restartTest() {
+            currentQuestion = 0;
+            answers = [];
+            totalScore = 0;
+            
+            questionContainer.style.display = 'block';
+            resultContainer.style.display = 'none';
+            advisorSection.style.display = 'block';
+            thankYouMessage.style.display = 'none';
+            
+            showQuestion();
+            updateProgressBar();
+        }
+
+        // 初始化应用
+        window.onload = initApp;
+    </script>
+</body>
+</html>
